@@ -9,7 +9,7 @@ order to provide relevant information about your system.
 
 Use the [releases](https://github.com/victorgama/howe/releases) to get the
 latest version for your platform. In case your platform isn't available, please
-[open an issue](https://github.com/victorgama/howe/issues/new) or build from
+[open an issue](https://github.com/victorgama/howe/issues/new/choose) or build from
 source.
 
 After downloading:
