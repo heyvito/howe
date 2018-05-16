@@ -210,6 +210,13 @@ Displays the uptime of the system. Takes no arguments.
   # up 2 hours, 40 minutes
 ```
 
+## Diagnosing Problems
+In order to not clobber the output, Howe may indicate problems such as "Could
+not read disk information" instead of showing a detailed error. In those cases,
+Howe will output the error to the system's syslog, when such feature is
+available. In case anything goes awry, do not panic and
+[open an issue](https://github.com/victorgama/howe/issues/new/choose)
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at
