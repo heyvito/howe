@@ -1,0 +1,21 @@
+howe:
+  - type: banner
+    command: hostname
+  - type: blank
+  # - type: print
+  #   text: Your text here
+  - type: uptime
+  - type: load
+  - type: updates
+  - type: blank
+  # - type: docker
+  #   containers:
+  #     - a_container_name
+  #     - another_container
+  # - type: systemd-services
+  #   services:
+  #     - docker
+  #     - another_service_here
+  - type: disks
+    disks:
+      - '*'
