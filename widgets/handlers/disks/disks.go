@@ -125,7 +125,7 @@ func process(items []fsItem) string {
 			nameColumnSize = l
 		}
 	}
-	nameColumnSizeWithPadding := int(math.Min(13, float64(nameColumnSize+6)))
+	nameColumnSizeWithPadding := int(math.Max(13, float64(nameColumnSize+6)))
 	buf := new(bytes.Buffer)
 	w := bufio.NewWriter(buf)
 	fmt.Fprint(w, padRight("Filesystems", " ", nameColumnSizeWithPadding))
