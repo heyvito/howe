@@ -63,7 +63,7 @@ text. Examples:
   # |_|  |_|\___/ \_/\_/ \___|
 
   - type: banner
-    command: whoami
+    text: $(whoami)
   # Outputs the output of the command:
   #                  _
   #                 | |
@@ -82,7 +82,7 @@ Blank simply outputs a blank line. Example:
     text: Hello
   - type: blank
   - type: print
-    text: Workd
+    text: World
   # Outputs:
   # Hello
   #
@@ -162,8 +162,7 @@ Load displays current system load. It takes no arguments.
 ```
 
 #### Print
-Much like [`banner`](#banner), but more discreet. Just like `banner`, `print`
-can also take a command as input.
+Much like [`banner`](#banner), but more discreet.
 
 ```yaml
   - type: print
@@ -172,12 +171,21 @@ can also take a command as input.
   # Howe
 
   - type: print
-    command: whoami
+    text: $(whoami)
   # Outputs the output of the command:
   # root
+
+  # Command and variable expansions are available and can be mixed with text:
+  - type: print
+    text: Logged in as $(whoami) @ $(hostname), running $SHELL
+  # Prints the provided text, replacing commands wrapped in `$()` with their
+  # outputs, and environment variables prefixed with `$` with their value.
+  # Missing variables are replaced with an empty string, but an invalid command
+  # or a command that returns an error will cause Howe to halt processing the
+  # rest of your widgets.
 ```
 
-#### systemd-services
+#### Systemd Services
 Displays status of provided systemd units.
 
 ```yaml
