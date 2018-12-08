@@ -3,7 +3,7 @@
 **Howe** provides a replacement for MOTD. Its contents can be customised in
 order to provide relevant information about your system.
 
-![Howe](docs/sample.png)
+![Howe](docs/screenshot.png)
 
 ## Installing
 
@@ -72,6 +72,41 @@ text. Examples:
   # | | | (_) | (_) | |_
   # |_|  \___/ \___/ \__|
 ```
+##### Custom Fonts
+
+`banner` also accepts custom colours and fonts through the `font` and `color`
+parameters. Fonts passed without an extension will automatically receive a
+`.flf` extension before lookup. Also, relative paths will be expanded using
+`/usr/share/howe` as the base directory. Provide an absolute path if your fonts
+are stored in another directory. When omitted, Howe will use a default, bundled
+font.
+
+Available colours are:
+
+- `red`
+- `green`
+- `yellow`
+- `blue`
+- `magenta`
+- `cyan`
+- `white`
+- `rainbow`
+
+```yaml
+  - type: banner
+    text: Howe
+    font: bigmoney-ne
+    color: cyan
+  #  /$$   /$$
+  # | $$  | $$
+  # | $$  | $$  /$$$$$$  /$$  /$$  /$$  /$$$$$$
+  # | $$$$$$$$ /$$__  $$| $$ | $$ | $$ /$$__  $$
+  # | $$__  $$| $$  \ $$| $$ | $$ | $$| $$$$$$$$
+  # | $$  | $$| $$  | $$| $$ | $$ | $$| $$_____/
+  # | $$  | $$|  $$$$$$/|  $$$$$/$$$$/|  $$$$$$$
+  # |__/  |__/ \______/  \_____/\___/  \_______/
+```
+
 
 > **Notice**: Figlets will be wrapped at 80 columns.
 
@@ -97,15 +132,15 @@ Lists all or a range of disks. Example:
      - '*'
   # Placing a single disk named '*' will cause all disks to be displayed.
   # Filesystems    Size  Used  Free  Use%
-  #   sysfs          0     0     0     0%
-  #   [=================================]
-  #   proc           0     0     0     0%
-  #   [=================================]
-  #   udev         945M    0   945M    0%
-  #   [=================================]
-  #   devpts         0     0     0     0%
-  #   [=================================]
-  #   [...]
+  # sysfs          0     0     0     0%
+  # [=================================]
+  # proc           0     0     0     0%
+  # [=================================]
+  # udev           945M  0     945M  0%
+  # [=================================]
+  # devpts         0     0     0     0%
+  # [=================================]
+  # [...]
 ```
 
 > **Notice**: Using `'*'` is not recommended, since it clobbers the output.
@@ -120,7 +155,7 @@ Lists all or a range of disks. Example:
      - '/dev/sdb1'
      - '/dev/sdc1'
   # Providing paths for the devices makes Howe to list only provided devices:
-  # Filesystems    Size  Used  Free  Use%
+  # Filesystems  Size  Used  Free  Use%
   # /dev/sda1    110G  8.2G   96G    8%
   # [=================================]
   # /dev/sdb1    1.8T  289G  1.4T   17%
@@ -253,6 +288,8 @@ Howe was built using the following awesome Open Source projects:
 | [fsouza/go-dockerclient](https://github.com/fsouza/go-dockerclient) | BSD-2-Clause |
 | [lukesampson/figlet](https://github.com/lukesampson/figlet)         | BSD-3-Clause |
 | [go-yaml/yaml](https://github.com/go-yaml/yaml)                     | Apache 2.0   |
+| [hashicorp/go-syslog](https://github.com/hashicorp/go-syslog)       | MIT          |
+| [arsham/rainbow](https://github.com/arsham/rainbow)                 | Apache 2.0   |
 
 ## License
 
