@@ -16,12 +16,15 @@ func TextOrCommand(module string, payload map[string]interface{}) (string, error
 		toWrite = txt.(string)
 		toWrite, err = ExpandBashStyleString(toWrite)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("%s: Error expanding command: %s", module, err)
 		}
 	} else {
 		cmd, ok := payload["command"]
 		if !ok {
-			return "", fmt.Errorf("%s: please provide text or command parameter", module)
+			// This used to say "text or command parameter", but since we're
+			// sunsetting `command` in favour of `text` and command/environment
+			// variables, we want people to only use `text`.
+			return "", fmt.Errorf("%s: please provide a text parameter", module)
 		}
 
 		var command *exec.Cmd
