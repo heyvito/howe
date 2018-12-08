@@ -29,6 +29,22 @@
   revision = "cd527374f1e5bff4938207604a14f2e38a9cf512"
 
 [[projects]]
+  digest = "1:191dea73af3395d6155e79bb1d3220b97b5f2491c3c59cb29cc7ef2647fb8352"
+  name = "github.com/arsham/rainbow"
+  packages = ["rainbow"]
+  pruneopts = "UT"
+  revision = "708cb3d3389975aea07ba9793c04d4d209640b36"
+  version = "v0.1"
+
+[[projects]]
+  branch = "master"
+  digest = "1:98416090070fbb0a1a3ac3a4e36d17f2e6558dcb2564347898bd822e24b1c0bb"
+  name = "github.com/arsham/strings"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "d1b453ead28db17f0af10a311818a8e03c14387e"
+
+[[projects]]
   digest = "1:5aaec2559dbb1fde897fd21b4165881391d7f7e069700bef640802068c8e7988"
   name = "github.com/cloudfoundry/gosigar"
   packages = [
@@ -258,6 +274,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/arsham/rainbow/rainbow",
     "github.com/cloudfoundry/gosigar",
     "github.com/coreos/go-systemd/dbus",
     "github.com/fatih/color",
