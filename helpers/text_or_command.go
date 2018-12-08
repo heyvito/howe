@@ -11,7 +11,14 @@ import (
 func TextOrCommand(module string, payload map[string]interface{}) (string, error) {
 	var toWrite string
 	txt, ok := payload["text"]
-	if !ok {
+	if ok {
+		var err error
+		toWrite = txt.(string)
+		toWrite, err = ExpandBashStyleString(toWrite)
+		if err != nil {
+			return "", err
+		}
+	} else {
 		cmd, ok := payload["command"]
 		if !ok {
 			return "", fmt.Errorf("%s: please provide text or command parameter", module)
@@ -41,8 +48,6 @@ func TextOrCommand(module string, payload map[string]interface{}) (string, error
 			return "", fmt.Errorf("%s: command failed: %s", module, err)
 		}
 		toWrite = string(res)
-	} else {
-		toWrite = txt.(string)
 	}
 	return toWrite, nil
 }
