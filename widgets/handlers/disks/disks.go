@@ -71,13 +71,25 @@ func handle(payload map[string]interface{}, output chan interface{}, wait *sync.
 			processableDisks = append(processableDisks, result)
 		}
 	} else {
+		// So we're not listing everything.
+		// In this case, parse /proc/mounts, so we can try to map it before
+		// accessing them.
+		mounts, err := getMounts()
+		if err != nil {
+			helpers.ReportError(fmt.Sprintf("disks: %s", err))
+			output <- "Error reading disks information"
+			wait.Done()
+			return
+		}
+
 		for _, fsName := range disks {
+			deviceName := mapValueOrDefault(mounts, fsName, fsName)
 			result := fsItem{
 				devName: fsName,
 				found:   false,
 			}
 			for _, fs := range fsList.List {
-				if fs.DevName == fsName {
+				if fs.DevName == deviceName {
 					result.found = true
 					usage := sigar.FileSystemUsage{}
 					if err := usage.Get(fs.DirName); err != nil {
@@ -182,4 +194,11 @@ func percentColor(use int) *color.Color {
 		c = color.FgRed
 	}
 	return color.New(c)
+}
+
+func mapValueOrDefault(m map[string]string, key, def string) string {
+	if v, ok := m[key]; ok {
+		return v
+	}
+	return def
 }
