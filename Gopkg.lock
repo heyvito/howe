@@ -179,11 +179,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4b00d8184fbb1c4157cd88435a83669dc9b3f1cd6e5b90c65d6a7855b55b479d"
+  digest = "1:b483f889e07d90415f5ab55d471d38733cc3c29400b52c768ee298419db786a9"
   name = "github.com/lukesampson/figlet"
   packages = ["figletlib"]
   pruneopts = "UT"
-  revision = "7e710844f7e21db6c07d0152dc3b06b52ee6a25f"
+  revision = "7a08fd2d2f828371436275ed3a667d3e93cb4a66"
 
 [[projects]]
   digest = "1:c658e84ad3916da105a761660dcaeb01e63416c8ec7bc62256a9b411a05fcd67"
