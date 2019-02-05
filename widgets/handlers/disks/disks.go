@@ -49,12 +49,24 @@ func handle(payload map[string]interface{}, output chan interface{}, wait *sync.
 		wait.Done()
 		return
 	}
+	mounts, err := getMounts()
+	if err != nil {
+		helpers.ReportError(fmt.Sprintf("disks: %s", err))
+		output <- "Error reading disks information"
+		wait.Done()
+		return
+	}
 
 	processableDisks := []fsItem{}
 	if len(disks) == 1 && disks[0] == "*" {
 		for _, fs := range fsList.List {
+			mountpoint := mounts.byDevice(fs.DevName)
+			if mountpoint == nil {
+				continue
+			}
+
 			result := fsItem{
-				devName: fs.DevName,
+				devName: mountpoint.mountpoint,
 				found:   true,
 			}
 			usage := sigar.FileSystemUsage{}
@@ -71,19 +83,16 @@ func handle(payload map[string]interface{}, output chan interface{}, wait *sync.
 			processableDisks = append(processableDisks, result)
 		}
 	} else {
-		// So we're not listing everything.
-		// In this case, parse /proc/mounts, so we can try to map it before
-		// accessing them.
-		mounts, err := getMounts()
-		if err != nil {
-			helpers.ReportError(fmt.Sprintf("disks: %s", err))
-			output <- "Error reading disks information"
-			wait.Done()
-			return
-		}
-
 		for _, fsName := range disks {
-			deviceName := mapValueOrDefault(mounts, fsName, fsName)
+			// Find a mountpoint or use the default name
+			mountpoint := mounts.byMountpoint(fsName)
+			var deviceName string
+			if mountpoint == nil {
+				deviceName = fsName
+			} else {
+				deviceName = mountpoint.device
+			}
+
 			result := fsItem{
 				devName: fsName,
 				found:   false,

@@ -9,11 +9,11 @@ import (
 	"regexp"
 )
 
-var mountPointRegexp = regexp.MustCompile(`^(\/[^\s]+)[\s\t]+([^\s]+)`)
+var mountPointRegexp = regexp.MustCompile(`^(\/[^\s]*)[\s\t]+(\/[^\s]*)`)
 
 // getMounts returns a map of mount point->device
-func getMounts() (map[string]string, error) {
-	mounts := make(map[string]string)
+func getMounts() (mountpoints, error) {
+	mounts := mountpoints{}
 	f, err := os.OpenFile("/proc/mounts", os.O_RDONLY, os.ModePerm)
 	if err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func getMounts() (map[string]string, error) {
 		opts := mountPointRegexp.FindAllStringSubmatch(line, -1)
 		if opts != nil {
 			for _, match := range opts {
-				mounts[match[2]] = match[1]
+				mounts = append(mounts, mountpoint{match[1], match[2]})
 			}
 		}
 	}
