@@ -41,14 +41,15 @@ func handle(payload map[string]interface{}, output chan interface{}, wait *sync.
 		return
 	}
 
-	fsList := sigar.FileSystemList{}
-	err := fsList.Get()
+	rawFsList := sigar.FileSystemList{}
+	err := rawFsList.Get()
 	if err != nil {
 		helpers.ReportError(fmt.Sprintf("disks: %s", err))
 		output <- "Could not read disk information"
 		wait.Done()
 		return
 	}
+	list := fsList{rawFsList}
 	mounts, err := getMounts()
 	if err != nil {
 		helpers.ReportError(fmt.Sprintf("disks: %s", err))
@@ -59,19 +60,19 @@ func handle(payload map[string]interface{}, output chan interface{}, wait *sync.
 
 	processableDisks := []fsItem{}
 	if len(disks) == 1 && disks[0] == "*" {
-		for _, fs := range fsList.List {
-			mountpoint := mounts.byDevice(fs.DevName)
+		for _, fs := range mounts {
+			mountpoint := list.findByName(fs.device)
 			if mountpoint == nil {
 				continue
 			}
 
 			result := fsItem{
-				devName: mountpoint.mountpoint,
+				devName: fs.mountpoint,
 				found:   true,
 			}
 			usage := sigar.FileSystemUsage{}
-			if err := usage.Get(fs.DirName); err != nil {
-				helpers.ReportError(fmt.Sprintf("disks: (%s) %s", fs.DirName, err))
+			if err := usage.Get(mountpoint.DirName); err != nil {
+				helpers.ReportError(fmt.Sprintf("disks: (%s) %s", mountpoint.DirName, err))
 				output <- "Error reading disks information"
 				wait.Done()
 				return
@@ -97,7 +98,7 @@ func handle(payload map[string]interface{}, output chan interface{}, wait *sync.
 				devName: fsName,
 				found:   false,
 			}
-			for _, fs := range fsList.List {
+			for _, fs := range list.List {
 				if fs.DevName == deviceName {
 					result.found = true
 					usage := sigar.FileSystemUsage{}

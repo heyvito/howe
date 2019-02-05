@@ -33,7 +33,11 @@ func getMounts() (mountpoints, error) {
 		opts := mountPointRegexp.FindAllStringSubmatch(line, -1)
 		if opts != nil {
 			for _, match := range opts {
-				mounts = append(mounts, mountpoint{match[1], match[2]})
+				var (
+					device = match[1]
+					mount  = match[2]
+				)
+				mounts = append(mounts, mountpoint{device, mount})
 			}
 		}
 	}

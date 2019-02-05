@@ -1,5 +1,7 @@
 package disks
 
+import sigar "github.com/cloudfoundry/gosigar"
+
 type mountpoint struct {
 	device     string
 	mountpoint string
@@ -19,6 +21,19 @@ func (m mountpoints) byDevice(name string) *mountpoint {
 func (m mountpoints) byMountpoint(path string) *mountpoint {
 	for _, i := range m {
 		if i.mountpoint == path {
+			return &i
+		}
+	}
+	return nil
+}
+
+type fsList struct {
+	sigar.FileSystemList
+}
+
+func (list fsList) findByName(name string) *sigar.FileSystem {
+	for _, i := range list.FileSystemList.List {
+		if i.DevName == name {
 			return &i
 		}
 	}
