@@ -130,23 +130,21 @@ Lists all or a range of disks. Example:
   - type: disks
     disks:
      - '*'
-  # Placing a single disk named '*' will cause all disks to be displayed.
-  # Filesystems    Size  Used  Free  Use%
-  # sysfs          0     0     0     0%
-  # [=================================]
-  # proc           0     0     0     0%
-  # [=================================]
-  # udev           945M  0     945M  0%
-  # [=================================]
-  # devpts         0     0     0     0%
-  # [=================================]
-  # [...]
+  # Placing a single disk named '*' will cause all mountpoints to be listed
+  # Filesystems                    Size  Used  Free  Use%
+  #   /                            110G  9.9G   94G   10%
+  #   [=================================================]
+  #   /mnt/sdc                     292G   64M  277G    1%
+  #   [=================================================]
+  #   /mnt/sdb                     1.8T  373G  1.3T   22%
+  #   [=================================================]
+  #   /mnt/sdd                     457G   33G  402G    8%
+  #   [=================================================]
+  #
 ```
 
-> **Notice**: Using `'*'` is not recommended, since it clobbers the output.
-> Also, `'*'` will cause Howe to be unable to output disk information for
-> some users, since it requires elevated privileges to access certain
-> mountpoints.
+> **Notice**: The `'*'` wildcard will cause all mountpoints to be listed, which,
+> in a few cases, will show the same device more than once.
 
 ```yaml
   - type: disks
@@ -163,6 +161,11 @@ Lists all or a range of disks. Example:
   # /dev/sdc1    292G   16G  262G    6%
   # [=================================]
 ```
+
+> **Protip**: Mountpoints can also be used as disk names. Feel free to use `/`,
+> `/boot`, and any other mountpoint as the name of a disk, and Howe will
+> automatically find and use information about the mapped disk, providing a
+> better name.
 
 #### Docker
 Lists status of provided Docker containers. Examples:
